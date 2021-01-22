@@ -1,0 +1,14 @@
+{
+  "extends": "@quasar/app/tsconfig-preset",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "experimentalDecorators": true,
+    "target": "es5"
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unsafe-member-access": false
+  }
+}

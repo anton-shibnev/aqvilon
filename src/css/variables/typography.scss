@@ -1,0 +1,235 @@
+$font-main: "Roboto", sans-serif;
+$font-secondary: "Montserrat", sans-serif;
+$body-font-size: 16px;
+$body-line-height: 1.2;
+
+// heads
+%main-title,
+.main-title {
+  @include font(("mob": 32px, "xs": 72px, "lg": 88px), 1, 500, ("mob": -0.01em, "lg": -0.03em), $font-secondary);
+}
+
+h2,
+.h2,
+%h2 {
+  @include font(("mob": 32px, "xs": 56px, "lg": 72px), 1, 500, -0.01em, $font-secondary);
+}
+
+%btn-txt, .btn-txt {
+  @include font(("mob": 16px, "md": 14px, "lg": 16px), 1, 500, -0.01em);
+}
+
+%input-text {
+  @include font(("mob": 16px, "xs": 18px, "md": 16px, "lg": 20px), 1, 400, -0.01em);
+}
+
+%form-policy {
+  @include font(("mob": 16px, "xs": 14px, "md": 12px, "lg": 16px), 1.2, 400, -0.01em);
+}
+
+%header-item {
+  @include font(("mob": 14px, "lg": 16px), 1.2, 400, -0.01em);
+}
+
+%header-tel-text {
+  @include font(("mob": 14px, "lg": 16px), 1.2, 500, -0.01em);
+}
+// hero
+%hero-sub-title {
+  @include font(("mob": 18px, "xs": 32px, "lg": 40px), 1.2, 500, -0.01em, $font-secondary);
+}
+
+%text-3 {
+  @include font(("mob": 16px, "lg": 20px), 1.2, 400, -0.01em);
+}
+
+%text-4 {
+  @include font(("mob": 20px, "lg": 24px), 1.2, 500, -0.01em);
+}
+
+%hero-counter-current {
+  @include font(18px, 1.2, 500, -0.01em);
+}
+
+%hero-counter-length {
+  @include font(12px, 1.2, 400, -0.01em);
+}
+
+// list-pic-block
+
+%text-6 {
+  @include font(("mob": 20px, "lg": 24px), 1.2, 500, -0.01em);
+}
+
+%text-7 {
+  @include font(("mob": 16px, "lg": 20px), 1.2, 400, -0.01em);
+}
+
+// special offer
+
+%text-8 {
+  @include font(("mob": 16px, "lg": 20px), 1.2, 400, -0.01em);
+}
+
+%text-9 {
+  @include font(("mob": 12px, "lg": 14px), 1.2, 400, -0.01em);
+}
+
+// numbers block
+
+%text-10 {
+  @include font(("mob": 24px, "lg": 32px), 1.2, 500, -0.01em);
+}
+
+%number-block-num-name {
+  @include font(("mob": 18px, "lg": 24px), 1, 400, -0.01em);
+}
+
+%text-11 {
+  @include font(("mob": 56px, "lg": 72px), 1, 500, -0.01em, $font-secondary);
+}
+
+//numbers block
+%text-12 {
+  @include font(16px, 1.2, 400, -0.01em);
+}
+
+%numbers-block-desc {
+  @include font(("mob": 16px, "xs": 20px, "md": 16px, "lg": 20px), 1.2, 400, -0.01em);
+}
+
+%numbers-block-address-desc {
+  @include font(16px, 1.2, 400, -0.01em);
+}
+
+%numbers-block-address-value {
+  @include font(("mob": 18px, "xs": 20px, "lg": 24px), 1.2, 500, -0.01em);
+}
+
+%numbers-block-tel {
+  @include font(("mob": 24px, "xs": 20px, "lg": 24px), 1.2, 500, -0.01em);
+}
+
+// map block
+%map-block-route-name {
+  @include font(("mob": 14px, "lg": 16px), 1.2, 400, -0.01em);
+}
+
+// privileges
+%privileges-box-title {
+  @include font(("mob": 24px, "lg": 32px), 1.2, 500, -0.01em);
+}
+
+// stage-develop
+%stage-develop-desc {
+  @include font(("mob": 16px, "xs": 20px, "md": 16px, "lg": 24px), 1.2, 400, -0.01em);
+}
+
+%stage-develop-release-desc {
+  @include font(("mob": 18px, "xs": 20px, "lg": 24px), 1.2, 500, -0.01em);
+}
+
+%stage-develop-release-date {
+  @include font(("mob": 16px, "xs": 18px, "lg": 20px), 1.2, 400, -0.01em);
+}
+
+%stage-develop-release-value {
+  @include font(16px, 1.2, 400, -0.01em);
+}
+
+%stage-develop-bottom {
+  @include font(("mob": 16px, "lg": 20px), 1.2, 400, -0.01em);
+}
+
+// future-block
+%desc-head {
+  @include font(("mob": 24px, "xs": 40px, "lg": 56px), 1, 500, -0.01em, $font-secondary);
+}
+
+%desc-text {
+  @include font(("mob": 16px, "xs": 20px, "md": 16px, "lg": 20px), 1.2, 400, -0.01em);
+}
+
+%future-block-item-title {
+  @include font(("mob": 20px, "xs": 24px), 1.2, 500, -0.01em);
+}
+
+%future-block-item-desc {
+  @include font(("mob": 16px, "xs": 20px, "md": 16px, "lg": 20px), 1.2, 400, -0.01em);
+}
+// gallery-block
+%gallery-block-desc-head {
+  @include font(("mob": 20px, "xs": 24px, "lg": 32px), 1.2, 500, -0.01em);
+}
+
+%gallery-block-desc-text {
+  @include font(("mob": 16px, "lg": 20px), 1.2, 400, -0.01em);
+}
+
+// cards-block
+%cards-block-card-title {
+  @include font(("mob": 20px, "xs": 24px, "lg": 32px), 1.2, 500, -0.01em);
+}
+
+%cards-block-card-desc {
+  @include font(("mob": 16px, "lg": 20px), 1.2, 400, -0.01em);
+}
+
+//pride block
+%pride-block-item-title {
+  @include font(("mob": 40px, "lg": 48px), 1, 500, -0.01em, $font-secondary);
+}
+
+%pride-block-desc {
+  @include font(("mob": 16px, "lg": 20px), 1.2, 400, -0.01em);
+}
+
+%pride-block-item-desc {
+  @include font(("mob": 18px, "lg": 24px), 1.2, 400, -0.01em);
+}
+
+//form block
+%form-desc {
+  @include font(("mob": 16px, "xs": 20px, "md": 16px, "lg": 24px), 1.2, 400, -0.01em);
+}
+
+// footer
+%footer-office-name {
+  @include font(("mob": 14px, "lg": 16px), 1.2, 400, -0.01em);
+}
+
+%footer-office-name-head {
+  @include font(("mob": 20px, "lg": 24px), 1.2, 500, ("mob": -0.01em, "md": 0));
+}
+
+%footer-office-value {
+  @include font(("mob": 14px, "lg": 16px), 1.2, 400, ("mob": -0.01em, "md": 0));
+}
+
+%footer-office-value-link {
+  @include font(("mob": 14px, "lg": 20px), 1.2, 400, ("mob": -0.01em, "md": 0));
+}
+
+%footer-dev-desc {
+  @include font(("mob": 12px, "lg": 14px), 1.2, 400, -0.01em);
+}
+
+%footer-bottom-list-item {
+  @include font(14px, 1.2, 400, ("mob": -0.03em, "xs": -0.01em, "md": -0.03em));
+}
+
+%footer-web-dev-desc {
+  @include font(("mob": 14px, "xs": 12px), 1.2, 400, -0.01em);
+}
+
+%footer-web-dev-link {
+  @include font(16px, 1.2, 500, -0.01em);
+}
+
+%footer-disclaimer {
+  @include font(("mob": 10px, "xs": 12px), 1.2, 400, ("mob": 0, "xs": -0.01em, "md": 0));
+}
+
+%footer-scroll {
+  @include font(16px, 1.2, 500, -0.01em);
+}

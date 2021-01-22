@@ -1,0 +1,30 @@
+// mixins
+
+@import "mixins";
+
+// vars
+
+@import "variables/colors";
+@import "variables/breakpoint";
+@import "variables/typography";
+
+// helpers
+
+@import "helpers/container";
+@import "helpers/outer";
+
+// button
+$button-padding: 18px 25px !default;
+$button-shadow: none !default;
+$button-shadow-active: none !default;
+
+// trs
+$trs: 0.2s;
+
+$form-block-pic-width: ( "md": 470px, "lg": 722px );
+
+$header-height: ( "mob": 42px, "xs": 60px, "md": 69px, "lg": 79px );
+
+$max-height-for-footer: 900px;
+
+//https://quasar.dev/style/color-palette#Adding-Your-Own-Colors

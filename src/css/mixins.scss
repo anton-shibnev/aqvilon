@@ -1,0 +1,467 @@
+// =============================================================================
+// bp-change
+// =============================================================================
+
+@mixin bp-change($style, $arr) {
+  @each $bp-name, $val in $arr {
+    @if ($bp-name == "mob") {
+      #{$style}: $val;
+    }
+
+    @else {
+      @media only screen and (min-width: #{map-get($bp, $bp-name)}) {
+        #{$style}: $val;
+      }
+    }
+  }
+}
+
+// =============================================================================
+// font-face
+// =============================================================================
+
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace +
+      str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@mixin font-face($name, $path, $weight: null, $style: null, $exts: eot woff2 woff ttf svg) {
+  $src: null;
+
+  $extmods: (
+    eot: "?",
+    svg: "#" + str-replace($name, " ", "_"),
+  );
+
+  $formats: (
+    otf: "opentype",
+    ttf: "truetype",
+  );
+
+  @each $ext in $exts {
+    $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+    $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+    $src: append($src, url(quote($path + '.' + $extmod)) format(quote($format)), comma);
+  }
+
+  @font-face {
+    font-family: quote($name);
+    font-style: $style;
+    font-weight: $weight;
+    src: $src;
+  }
+}
+
+// =============================================================================
+// pseudo
+// =============================================================================
+
+@mixin pseudo($display: block, $pos: absolute, $content: "") {
+  content: $content;
+  display: $display;
+  position: $pos;
+}
+
+@mixin c-pseudo($name: after, $pos: absolute) {
+  @if ($pos == absolute) {
+    position: relative;
+  }
+
+  &::#{$name} {
+    content: "";
+    display: block;
+    position: $pos;
+    @content;
+  }
+}
+
+// =============================================================================
+// abs-spread
+// =============================================================================
+
+@mixin abs-spread() {
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+
+// =============================================================================
+// Calculate rem
+// =============================================================================
+
+@function rem($size) {
+  @return $size / $body-font-size * 1rem;
+}
+
+@function vw($px-vw, $base-vw: $container-mw) { @return ($px-vw * 100vw) / $base-vw; }
+
+// =============================================================================
+// font
+// =============================================================================
+
+@mixin font-size($size) {
+  font-size: rem($size);
+}
+
+@mixin font($size: false, $lh: false, $weight: false, $spacing: false, $family: false, $style: false) {
+  @if $size {
+    @if type-of($size) == "map" {
+      @each $bp-name, $val in $size {
+        @if ($bp-name == "mob") {
+          font-size: rem($val);
+        }
+
+        @else {
+          @media only screen and (min-width: #{map-get($bp, $bp-name)}) {
+            font-size: rem($val);
+          }
+        }
+      }
+    }
+
+    @else { font-size: rem($size); }
+  }
+
+  @if $lh {
+    @if type-of($lh) == "map" {
+      @include bp-change(line-height, $lh);
+    }
+
+    @else { line-height: $lh; }
+  }
+
+  @if $weight {
+    @if type-of($weight) == "map" {
+      @include bp-change(font-weight , $weight);
+    }
+
+    @else { font-weight: $weight; }
+  }
+
+  @if $spacing {
+    @if type-of($spacing) == "map" {
+      @include bp-change(letter-spacing , $spacing);
+    }
+
+    @else { letter-spacing: $spacing; }
+  }
+
+  @if $family { font-family: $family; }
+
+  @if $style { font-style: $style; }
+}
+
+// =============================================================================
+// wh
+// =============================================================================
+
+@mixin wh($width, $height: $width) {
+  height: $height;
+  width: $width;
+}
+
+@mixin wh-arr($arr) {
+  @each $bp-name, $val in $arr {
+    @if ($bp-name == "mob") {
+      @include wh($val...);
+    }
+
+    @else {
+      @media only screen and (min-width: #{map-get($bp, $bp-name)}) {
+        @include wh($val...);
+      }
+    }
+  }
+}
+
+// =============================================================================
+// p-wider
+// =============================================================================
+
+@mixin wider-init($m) {
+  margin-left: -$m;
+  margin-right: -$m;
+  width: calc(100% + (#{$m} * 2));
+}
+
+@mixin wider($n) {
+  @if type-of($n) == "map" {
+    @each $bp-name, $val in $n {
+      @if ($bp-name == "mob") {
+        @include wider-init($val);
+      }
+
+      @else {
+        @media only screen and (min-width: #{map-get($bp, $bp-name)}) {
+          @include wider-init($val);
+        }
+      }
+    }
+  }
+
+  @else {
+    @include wider-init($n);
+  }
+}
+
+@mixin p-wider($n) {
+  @if type-of($n) == "map" {
+    @each $bp-name, $val in $n {
+      @if ($bp-name == "mob") {
+        @include wider-init($val);
+        @include padding-x($val);
+      }
+
+      @else {
+        @media only screen and (min-width: #{map-get($bp, $bp-name)}) {
+          @include wider-init($val);
+          @include padding-x($val);
+        }
+      }
+    }
+  }
+
+  @else {
+    @include wider-init($n);
+    @include padding-x($n);
+  }
+}
+
+// =============================================================================
+// circle
+// =============================================================================
+
+@mixin circle($d) {
+  border-radius: 50%;
+
+  @if type-of($d) == "map" {
+    @each $bp-name, $val in $d {
+      @if ($bp-name == "mob") {
+        @include wh($val...);
+      }
+
+      @else {
+        @media only screen and (min-width: #{map-get($bp, $bp-name)}) {
+          @include wh($val...);
+        }
+      }
+    }
+  }
+
+  @else {
+    @include wh($d);
+  }
+}
+
+// =============================================================================
+// abs-center
+// =============================================================================
+
+@mixin abs-center() {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin abs-center-y() {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@mixin abs-center-x() {
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+// =============================================================================
+// bordered-grid
+// =============================================================================
+
+@mixin bordered-grid-y($color: #000, $el: "div") {
+  border-left-style: none;
+  border-right: 1px solid $color;
+  border-top: 1px solid $color;
+
+  > #{$el} {
+    border-bottom: 1px solid $color;
+    border-left: 1px solid $color;
+    border-right-style: none;
+  }
+}
+
+@mixin bordered-grid-x($color: #000, $el: "div") {
+  border-left: 1px solid $color;
+  border-right-style: none;
+  border-top: 1px solid $color;
+
+  > #{$el} {
+    border-bottom: 1px solid $color;
+    border-left-style: none;
+    border-right: 1px solid $color;
+  }
+}
+
+// =============================================================================
+// padding
+// =============================================================================
+
+@mixin padding-y($t, $b: $t) {
+  padding: {
+    bottom: $b;
+    top: $t;
+  };
+}
+
+@mixin padding-y-arr($arr) {
+  @each $bp-name, $val in $arr {
+    @if ($bp-name == "mob") {
+      @include padding-y($val...);
+    }
+
+    @else {
+      @media only screen and (min-width: #{map-get($bp, $bp-name)}) {
+        @include padding-y($val...);
+      }
+    }
+  }
+}
+
+@mixin padding-x($l, $r: $l) {
+  padding: {
+    left: $l;
+    right: $r;
+  }
+}
+
+@mixin padding-x-arr($arr) {
+  @each $bp-name, $val in $arr {
+    @if ($bp-name == "mob") {
+      @include padding-x($val...);
+    }
+
+    @else {
+      @media only screen and (min-width: #{map-get($bp, $bp-name)}) {
+        @include padding-x($val...);
+      }
+    }
+  }
+}
+// =============================================================================
+// margin
+// =============================================================================
+
+@mixin margin-x($l, $r: $l) {
+  margin: {
+    left: $l;
+    right: $r;
+  }
+}
+
+@mixin margin-x-arr($arr) {
+  @each $bp-name, $val in $arr {
+    @if ($bp-name == "mob") {
+      @include margin-x($val...);
+    }
+
+    @else {
+      @media only screen and (min-width: #{map-get($bp, $bp-name)}) {
+        @include margin-x($val...);
+      }
+    }
+  }
+}
+
+@mixin margin-y($t, $b: $t) {
+  margin: {
+    bottom: $b;
+    top: $t;
+  }
+}
+
+// =============================================================================
+// hide
+// =============================================================================
+
+@mixin hide() {
+  clip: rect(0 0 0 0);
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+// =============================================================================
+// behavior
+// =============================================================================
+
+@mixin behavior($name ,$default, $hover, $active) {
+  #{$name}: $default;
+  transition: #{$name} $trs;
+
+  &:hover {
+    #{$name}: $hover;
+  }
+
+  &:active {
+    #{$name}: $active;
+  }
+}
+
+// =============================================================================
+// button reset
+// =============================================================================
+
+@mixin btn-reset() {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  outline: none;
+  padding: 0;
+}
+
+// =============================================================================
+// pin out
+// =============================================================================
+
+@mixin pin-out($side: left, $m: 0) {
+  margin-#{$side}: -$m;
+  width: calc(100% + #{$m});
+}
+
+// =============================================================================
+// hover pic
+// =============================================================================
+
+@mixin scale-pic($this, $name: pic) {
+  @media #{$mq-md} {
+    &:hover {
+      #{$this}__#{$name} {
+        transform: scale(1.02) rotate(0.02deg);
+      }
+    }
+  }
+
+  #{$this}__#{$name} {
+    @media #{$mq-md} {
+      transform: scale(1) rotate(0.02deg);
+      transition: transform $trs ease-in-out;
+    }
+  }
+}

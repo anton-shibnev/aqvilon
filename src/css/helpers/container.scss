@@ -1,0 +1,37 @@
+$container-padding: (
+  "mob": 16px,
+  "xs": 24px,
+  "md": 40px,
+  "lg": 60px,
+);
+$container-mw: 1800px;
+
+$container-kid-mw-md: 960px;
+$container-kid-mw-lg: 1345px;
+
+%container-padding {
+  @include bp-change(padding-left, $container-padding);
+  @include bp-change(padding-right, $container-padding);
+}
+
+%container-kid {
+  @media #{$mq-md} {
+    @include margin-x(auto);
+
+    max-width: $container-kid-mw-md;
+  }
+
+  @media #{$mq-lg} {
+    max-width: $container-kid-mw-lg;
+  }
+}
+
+.container {
+  @extend %container-padding;
+
+  flex: 0 0 auto;
+  margin: 0 auto;
+  max-width: $container-mw + (map-get($container-padding, "lg") * 2);
+  position: relative;
+  width: 100%;
+}

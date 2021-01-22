@@ -1,0 +1,19 @@
+version: '3.3'
+
+services:
+
+  app:
+    command: bash -c "python /code/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ../:/code
+    ports:
+      - 8000:8000
+    env_file:
+      - local.env
+  redis:
+    image: "redis:alpine"
+
+
+#networks:
+#  skynet:
+#    external: false

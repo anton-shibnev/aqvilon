@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+  app:
+    image: registry.allio.ru/devops/${DRONE_REPO_NAME}:${DRONE_COMMIT_BRANCH}
+    env_file:
+      - app.env
+    container_name: ${DRONE_REPO_NAME}
+    command: bash -c "env && npm run start"
+    ports:
+      - "${APP_PORT}:3000"
+    networks:
+      skynet:
+
+networks:
+  skynet:
+    external: true

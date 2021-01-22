@@ -1,0 +1,98 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: docker build
+    image: docker
+    commands:
+      - "echo \"\nENV QENV=$${TARGET_ENV}\" >> Dockerfile"
+      - "echo \"\nRUN quasar build -m ssr\" >> Dockerfile"
+      - "docker build --progress plain -t ${DRONE_REPO_NAME}-${DRONE_COMMIT_BRANCH} ."
+      - "docker run --rm ${DRONE_REPO_NAME}-${DRONE_COMMIT_BRANCH} env"
+      - "docker tag ${DRONE_REPO_NAME}-${DRONE_COMMIT_BRANCH} registry.allio.ru/devops/${DRONE_REPO_NAME}:${DRONE_COMMIT_BRANCH}"
+      - "docker push registry.allio.ru/devops/${DRONE_REPO_NAME}:${DRONE_COMMIT_BRANCH}"
+    volumes:
+    - name: docker-socket
+      path: /var/run/docker.sock
+    environment:
+      TARGET_ENV: ${DRONE_COMMIT_BRANCH}
+    when:
+      branch:
+        - dev
+        - prod
+        - stage
+
+  - name: run dev
+    image: louisbb/docker-compose-ssh:latest
+    commands:
+      - "cd devops"
+      - "cp envs/${DRONE_REPO_NAME}_$${TARGET_ENV}_app.env ./app.env"
+      - "cp envs/${DRONE_REPO_NAME}_$${TARGET_ENV}_compose.env ./.env"
+      - "docker-compose -f compose.yml -f $${TARGET_ENV}.yml up -d --force-recreate"
+      - "docker ps"
+    volumes:
+    - name: docker-socket
+      path: /var/run/docker.sock
+    - name: envs
+      path: /drone/src/devops/envs/
+    environment:
+      TARGET_ENV: "dev"
+    when:
+       branch:
+         - dev
+
+  - name: upd prod
+    image: louisbb/docker-compose-ssh:latest
+    commands:
+      - "echo  -e \"Host *\n\tStrictHostKeyChecking no\n\n\" > ~/.ssh/config"
+      - "chmod 600 ~/.ssh/id_rsa"
+      - "cd devops"
+      - "cp envs/${DRONE_REPO_NAME}_$${TARGET_ENV}_app.env ./app.env"
+      - "cp envs/${DRONE_REPO_NAME}_$${TARGET_ENV}_compose.env ./.env"
+      - "cat app.env"
+      - "cat .env"
+      - "docker-compose -f compose.yml -f $${TARGET_ENV}.yml config > docker-compose.yml"
+      - "scp -P $${REMOTE_PORT} docker-compose.yml .env app.env $${REMOTE_USERNAME}@$${REMOTE_HOST}:/srv/${DRONE_REPO_NAME}/devops"
+      - "chmod +x ./push_img.sh"
+      - "./push_img.sh ${DRONE_REPO_NAME} ${DRONE_COMMIT_BRANCH}"
+      - |
+        ssh -t -p $REMOTE_PORT $REMOTE_USERNAME@$REMOTE_HOST << EOF
+        cd /srv/${DRONE_REPO_NAME}/devops
+        docker-compose up -d --force-recreate
+        docker exec ${DRONE_REPO_NAME} cat /etc/hosts
+        EOF
+    environment:
+      TARGET_ENV: "prod"
+      IMAGE_REPOSITORY: "registry.allio.ru/devops/"
+      DRONE_REPO_NAME: ${DRONE_REPO_NAME}
+      DRONE_COMMIT_BRANCH: ${DRONE_COMMIT_BRANCH}
+      REMOTE_USERNAME:
+        from_secret: DEPLOY_USERNAME
+      REMOTE_HOST:
+        from_secret: PROD_IP
+      REMOTE_PORT:
+        from_secret: PROD_SSH_PORT
+    volumes:
+      - name: docker-socket
+        path: /var/run/docker.sock
+      - name: rsa
+        path: /root/.ssh/id_rsa
+      - name: envs
+        path: /drone/src/devops/envs/
+    when:
+      branch:
+        - prod
+
+volumes:
+  - name: docker-socket
+    host:
+      path: /var/run/docker.sock
+
+  - name: rsa
+    host:
+      path: /root/.ssh/id_rsa
+
+  - name: envs
+    host:
+      path: /opt/devops/env/

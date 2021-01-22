@@ -1,0 +1,20 @@
+$breakpoint-xs: 768px;
+//$breakpoint-sm: 768px !default
+$breakpoint-md: 1366px;
+$breakpoint-lg: 1920px;
+
+$mq-mob: only screen and (min-width: 100px);
+$mq-xs: only screen and (min-width: #{$breakpoint-xs});
+$mq-md: only screen and (min-width: #{$breakpoint-md});
+$mq-lg: only screen and (min-width: #{$breakpoint-lg});
+
+$bp: (
+  "mob": 100px,
+  "xs": $breakpoint-xs,
+  "md": $breakpoint-md,
+  "lg": $breakpoint-lg,
+);
+
+//@function bp($key) {
+//  @return only screen and (min-width: #{map-get($bp, $key)});
+//}

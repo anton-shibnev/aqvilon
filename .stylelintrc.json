@@ -1,0 +1,33 @@
+{
+  "extends": "stylelint-config-sass-guidelines",
+  "plugins": [
+    "stylelint-order"
+  ],
+  "rules": {
+    "at-rule-empty-line-before": [ "always", {
+      "except": [
+        "blockless-after-same-name-blockless",
+        "first-nested"
+      ]
+    } ],
+    "declaration-empty-line-before": [ "always", {
+      "except": [
+        "after-declaration",
+        "first-nested"
+      ]
+    } ],
+    "string-quotes": "double",
+    "selector-class-pattern": null,
+    "selector-max-id": 1,
+    "max-nesting-depth": 5,
+    "selector-max-compound-selectors": 6,
+    "selector-pseudo-element-no-unknown": [
+      true,
+      {
+        "ignorePseudoElements": [
+          "v-deep"
+        ]
+      }
+    ]
+  }
+}

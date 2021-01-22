@@ -1,0 +1,13 @@
+$fonts-url: '../assets/fonts';
+
+// =============================================================================
+// montserrat
+// =============================================================================
+@include font-face('Montserrat', '#{$fonts-url}/Montserrat/Montserrat-Medium', 500, normal, woff woff2);
+//@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+
+// =============================================================================
+// roboto
+// =============================================================================
+@include font-face('Roboto', '#{$fonts-url}/Roboto/Roboto-Regular', 400, normal, woff woff2);
+@include font-face('Roboto', '#{$fonts-url}/Roboto/Roboto-Medium', 500, normal, woff woff2);
